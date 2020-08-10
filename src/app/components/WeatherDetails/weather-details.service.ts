@@ -16,10 +16,10 @@ export class WeatherDetailsService {
  
   private CurrentConditions$ = new Subject<CurrentConditions[]>();
   private forcasts$ = new Subject<Forecast[]>();
+  //1 "ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";
+  //2 "p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7"
   //3 JBeC9zd7kA6K7RsFkOKDhGo3UPEpnZJM
   //4 "m0XQhZB6q0A6ztq0GGWiBJpRRvdDQVXF"
-  //"ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";
-  //"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7"
 
   ApiKey = "ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";
   
