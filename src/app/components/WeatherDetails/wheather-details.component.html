@@ -12,7 +12,7 @@
 <mat-card class="example-card">
     <mat-card-header>
       <div mat-card-avatar class="example-header-image"></div>
-      <mat-card-title>Weather Details - {{selectedCity}}</mat-card-title>
+      <mat-card-title>World Weather Details - {{selectedCity}}</mat-card-title>
       <mat-card-subtitle>{{message}}
       </mat-card-subtitle>
     </mat-card-header>
@@ -25,7 +25,7 @@
 
                     <mat-form-field>
                       <mat-label>City</mat-label>
-                      <input matInput placeholder="City" aria-label="State" [matAutocomplete]="auto" formControlName="city" pattern="[a-zA-Z]+$" (input)="onCityChange($event.target.value)" (keyup)="onKeyUpEvent($event.target.value)" (change)="onChangeEvent($event.target.value)" required><!--pattern="[a-zA-Z ]*"-->
+                      <input matInput placeholder="City" aria-label="State" [matAutocomplete]="auto" formControlName="city"  (input)="onCityChange($event.target.value)" (change)="onChangeEvent($event.target.value)" (keyup)="onKeyUpEvent($event.target.value)" required><!--(input)="onCityChange($event.target.value)" (change)="onChangeEvent($event.target.value)" (keyup)="onKeyUpEvent($event.target.value)"-->
 
                         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)"><!--ORIG [displayWith]="displayFn"-->
                         
@@ -88,10 +88,10 @@
               <input matInput [(ngModel)]="forecast.Night.IconPhrase">
 
               <mat-label>Temperature Min</mat-label>
-              <input matInput [(ngModel)]="forecast.Temperature.Minimum.Value">
+              <input matInput [(ngModel)]="forecast.Temperature.Minimum.Value"> <!--[value]="{{(forecast.Temperature.Minimum.Value - 32) * 5 / 9 }}"-->
             
               <mat-label>Temperature Max</mat-label>
-              <input matInput [(ngModel)]="forecast.Temperature.Maximum.Value">
+              <input matInput [(ngModel)]="forecast.Temperature.Maximum.Value"><!--[value]="{{(forecast.Temperature.Maximum.Value - 32) * 5 / 9}}"-->
             </article>
 
             </div>

@@ -25,7 +25,7 @@ import { FavoriteAdd, FavoriteRemove } from '../favorites/favorite.actions';
 
 export class WheatherDetailsComponent implements OnInit {
 @Input('favSelectedID') favKey:string;  
-  ApiKey ="ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ"; 
+  ApiKey =  "BJLiRte3ZRqdXa6GshrLml2hN5VoeQ2O"; 
   //1 "ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";
   //2 "p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";
   //3 "JBeC9zd7kA6K7RsFkOKDhGo3UPEpnZJM"
@@ -99,6 +99,8 @@ export class WheatherDetailsComponent implements OnInit {
       this.key = this.favoriteKey;
       this.fiveDaysForcastObs(this.key);
       this.currentConditionsObs(this.key);
+
+      this.selectedCity = this.favoriteCity;
     }
   }
 
@@ -200,7 +202,7 @@ export class WheatherDetailsComponent implements OnInit {
     try {
       
       response = this.weatherDetailsService.currentconditions(locationKey);
-      this.temperature = response[0].Temperature.Metric.Value;
+      this.temperature = response[0].Temperature.Metric.Value;//Celcious
       this.weatherText = response[0].WeatherText;
       this.weatherIcon = response[0].WeatherIcon;
 
@@ -217,7 +219,7 @@ export class WheatherDetailsComponent implements OnInit {
     try {
     this.weatherDetailsService.currentconditionsObs(locationKey).subscribe(data => {
      console.log('currentConditionsObs client data:' + JSON.stringify(data)); 
-     this.temperature = data[0].Temperature.Metric.Value;
+     this.temperature = data[0].Temperature.Metric.Value;//Celcious
      this.weatherText = data[0].WeatherText;
      this.weatherIcon = data[0].WeatherIcon;
      this.IsVisible = true;
@@ -234,6 +236,13 @@ export class WheatherDetailsComponent implements OnInit {
     var response: Forecast[]; 
     try {
       response = this.weatherDetailsService.fiveDaysForecasts(locationKey)
+      
+      //for (let i = 0; i < response.length; i++) {
+      //  response[i].Temperature.Minimum.Value = (response[i].Temperature.Minimum.Value - 32) * 5 / 9 ;
+      //  response[i].Temperature.Maximum.Value = (response[i].Temperature.Maximum.Value - 32) * 5 / 9 ;
+      //  console.log('forecasts  response[i].Temperature.Maximum.Value celcious:' + response[i].Temperature.Maximum.Value );
+      //}
+
       this.forecasts = response;
         console.log('5days client forecasts :' + JSON.stringify(this.forecasts));
       
@@ -248,6 +257,15 @@ export class WheatherDetailsComponent implements OnInit {
     try {
     this.weatherDetailsService.fiveDaysForecastsObs(locationKey).subscribe(data => {
      console.log('fiveDaysForcastObs client data:' + JSON.stringify(data)); 
+     
+     for (let i = 0; i < data.length; i++) {
+      let MinCelcious  = (data[i].Temperature.Minimum.Value - 32) * 5 / 9 ;
+      data[i].Temperature.Minimum.Value = MinCelcious;//(data[i].Temperature.Minimum.Value - 32) * 5 / 9 ;
+      let MaxCelcious = (data[i].Temperature.Maximum.Value - 32) * 5 / 9 ;
+      data[i].Temperature.Maximum.Value = MaxCelcious ; //(data[i].Temperature.Maximum.Value - 32) * 5 / 9 ;
+      //console.log('forecasts  data[i].Temperature.Maximum.Value celcious:' + data[i].Temperature.Maximum.Value );
+    }
+
      this.forecasts = data;
     });
    }
@@ -304,6 +322,9 @@ export class WheatherDetailsComponent implements OnInit {
   }
 
   onChangeEvent(searchValue: string) {
+    //if (this.weatherSearchForm.get('city').. controls['city'].length)
+
+
     console.log('onChangeEvent searchValue :' + searchValue);
     this.color = "primary";
     var q = searchValue;
@@ -311,7 +332,7 @@ export class WheatherDetailsComponent implements OnInit {
     this.weatherSearchForm.get('city')
     .valueChanges
     .pipe(
-      debounceTime(500),
+      debounceTime(800),
       tap(() => {
         this.message = "";
         this.autocompletes = [];
@@ -352,7 +373,7 @@ export class WheatherDetailsComponent implements OnInit {
     this.weatherSearchForm.get('city')
     .valueChanges
     .pipe(
-      debounceTime(500),
+      debounceTime(800),
       tap(() => {
         this.message = "";
         this.autocompletes = [];
@@ -391,7 +412,7 @@ export class WheatherDetailsComponent implements OnInit {
   }
   else
   {
-    this.removeFavorite(this.deleteIndex);
+    this.removeFavorite(this.deleteIndex - 1);
     this.existInFavorites = false;
   }
   
