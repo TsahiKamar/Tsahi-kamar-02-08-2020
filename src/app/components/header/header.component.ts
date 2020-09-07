@@ -12,4 +12,8 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
   }
 
+  //toolbarSelected(value :number) {
+  //  console.log("toolbarSelected:" + value );
+  //}
+
 }

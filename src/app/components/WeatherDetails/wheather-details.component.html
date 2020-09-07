@@ -12,7 +12,7 @@
 <mat-card class="example-card">
     <mat-card-header>
       <div mat-card-avatar class="example-header-image"></div>
-      <mat-card-title>World Weather Details - {{selectedCity}}</mat-card-title>
+      <mat-card-title>World Weather - {{selectedCity}}</mat-card-title>
       <mat-card-subtitle>{{message}}
       </mat-card-subtitle>
     </mat-card-header>
@@ -57,7 +57,7 @@
           <p>
           <br>
           
-          <div class="wrapper" *ngIf="IsVisible">
+          <div class="wrapper" *ngIf="IsVisible; else serverApiKeyNotAllowed">
             <article class="main">
               <h3><em>Today's Weather - {{todayDay}} {{todayDate}}</em></h3>
               <br>
@@ -71,15 +71,25 @@
 
             </article>
           </div>
+          <ng-template #serverApiKeyNotAllowed>
+            
+            <pre style="color: red;">Sorry, Server requests limit error !</pre>
+
+          </ng-template>
 
 
           <h3 *ngIf="forecasts"><em>5 Days Forecast</em></h3>
           <br>
-          <ng-container *ngFor="let forecast of forecasts">
+          <!--ORIG <ng-container *ngFor="let forecast of forecasts">-->
+          <ng-container *ngFor="let forecast of forecasts; let i = index" [attr.data-index]="i">
 
+            
           <div class="wrapper5">
 
             <article class="main">
+              <mat-label>Day</mat-label>
+              <input matInput [(ngModel)]="days[i]">
+
               <mat-label>Date</mat-label>
               <input matInput [(ngModel)]="forecast.Date">
               <mat-label>Day Phrase</mat-label>
@@ -106,7 +116,7 @@
 
     </mat-card-actions>
 </mat-card>
-<pre>{{message}}</pre>
+<pre style="color: red;">{{message}}</pre>
 
 
 

@@ -6,12 +6,12 @@ import { WeatherDetailsService } from './weather-details.service';
 import { CurrentConditions } from './Models/currentConditions.model';
 import { Forecast } from './Models/forecast.model';
 import { HttpParams, HttpClient, HttpHeaders } from '@angular/common/http';
-import { debounceTime, tap, switchMap, finalize, map } from 'rxjs/operators';
+import { debounceTime, tap, switchMap, finalize, map, filter, takeUntil } from 'rxjs/operators';
 import { Autocomplete } from './Models/autocomplete.model';
 import { SharedDataService } from 'src/app/services/sharedData.service';
 import { SharedService } from 'src/app/services/shared.service';
 import {select, Store} from '@ngrx/store'; 
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Favorite } from '../favorites/favorite.model';
 import { FavoriteAdd, FavoriteRemove } from '../favorites/favorite.actions';
 
@@ -25,13 +25,15 @@ import { FavoriteAdd, FavoriteRemove } from '../favorites/favorite.actions';
 
 export class WheatherDetailsComponent implements OnInit {
 @Input('favSelectedID') favKey:string;  
-  ApiKey =  "BJLiRte3ZRqdXa6GshrLml2hN5VoeQ2O"; 
+  ApiKey =  "m0XQhZB6q0A6ztq0GGWiBJpRRvdDQVXF"; 
   //1 "ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";
   //2 "p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";
   //3 "JBeC9zd7kA6K7RsFkOKDhGo3UPEpnZJM"
   //4 m0XQhZB6q0A6ztq0GGWiBJpRRvdDQVXF
   // 5 BJLiRte3ZRqdXa6GshrLml2hN5VoeQ2O
   message: string = "" ;
+
+  d:Date;
 
   todayDate:string;
   todayDay:string;
@@ -53,7 +55,7 @@ export class WheatherDetailsComponent implements OnInit {
   //5 days
   forecasts: Forecast[];
   date:Date;
-
+  //day:string;
 
   src:string;
   tempature: number;
@@ -63,6 +65,8 @@ export class WheatherDetailsComponent implements OnInit {
   isLoading = false;
   errorMsg: string;
    
+  //?
+  ngUnSubscribe: Subject<void> = new Subject<void>();
 
   favorites: Observable<Favorite[]>;  
   existInFavorites: boolean = false;
@@ -102,6 +106,32 @@ export class WheatherDetailsComponent implements OnInit {
 
       this.selectedCity = this.favoriteCity;
     }
+
+
+    //TEST TEST TEST HERE
+    this.favorites.pipe( 
+      map(arr =>
+         this.favArr = arr.filter( r => r.ID == this.key )
+       )
+   )
+   .subscribe(results => {
+     console.log('Search results:', results);
+     if (results.length > 0)
+     {
+       console.log('Exist in favorites ! index : ' + this.favArr[0].num);
+       this.deleteIndex = this.favArr[0].num;
+       this.existInFavorites = true;
+       this.color = "warn";
+     }
+     else
+     {
+       console.log('Not exist in favorites !');
+       this.existInFavorites = false;
+       this.color = "primary";
+     }
+   });
+
+
   }
 
   ngOnInit() {
@@ -165,8 +195,8 @@ export class WheatherDetailsComponent implements OnInit {
 
     this.todayDate = new Date().toLocaleDateString();
 
-    var d = new Date();
-    this.todayDay = this.days[d.getDay()];    
+    this.d = new Date(); //orig var d=
+    this.todayDay = this.days[this.d.getDay()];    
     
   
      
@@ -263,7 +293,6 @@ export class WheatherDetailsComponent implements OnInit {
       data[i].Temperature.Minimum.Value = MinCelcious;//(data[i].Temperature.Minimum.Value - 32) * 5 / 9 ;
       let MaxCelcious = (data[i].Temperature.Maximum.Value - 32) * 5 / 9 ;
       data[i].Temperature.Maximum.Value = MaxCelcious ; //(data[i].Temperature.Maximum.Value - 32) * 5 / 9 ;
-      //console.log('forecasts  data[i].Temperature.Maximum.Value celcious:' + data[i].Temperature.Maximum.Value );
     }
 
      this.forecasts = data;
@@ -332,6 +361,8 @@ export class WheatherDetailsComponent implements OnInit {
     this.weatherSearchForm.get('city')
     .valueChanges
     .pipe(
+      filter((data: string) => data.length > 0),
+      takeUntil(this.ngUnSubscribe),
       debounceTime(800),
       tap(() => {
         this.message = "";
@@ -373,6 +404,8 @@ export class WheatherDetailsComponent implements OnInit {
     this.weatherSearchForm.get('city')
     .valueChanges
     .pipe(
+      filter((data: string) => data.length > 0),
+      takeUntil(this.ngUnSubscribe),
       debounceTime(800),
       tap(() => {
         this.message = "";

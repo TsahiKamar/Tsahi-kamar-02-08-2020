@@ -7,8 +7,9 @@
   
   <mat-toolbar color="primary">
     <button mat-icon-button><mat-icon>menu</mat-icon></button>
-    <button mat-button routerLink="/weatherDetails">Home</button>
-    <button mat-button routerLink="/favorites">Favorites</button>
+    <button mat-button routerLink="/weatherDetails" routerLinkActive="active"
+    [routerLinkActiveOptions]="{exact:true}">Home</button>
+    <button mat-button routerLink="/favorites" routerLinkActive="active">Favorites</button>
 
     <!--<button mat-button routerLink="/favoriteAdd">Favorite Add</button>-->
 
