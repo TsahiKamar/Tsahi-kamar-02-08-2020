@@ -1,13 +1,13 @@
 import { Component, OnInit, Input, ɵConsole } from '@angular/core';
-import { FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
-import { MatButton } from '@angular/material';
+import { FormControl, FormGroup, Validators, FormArray} from '@angular/forms';
+//import { MatButton } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { WeatherDetailsService } from './weather-details.service';
 import { CurrentConditions } from './Models/currentConditions.model';
 import { Forecast } from './Models/forecast.model';
 import { HttpParams, HttpClient, HttpHeaders } from '@angular/common/http';
 import { debounceTime, tap, switchMap, finalize, map, filter, takeUntil } from 'rxjs/operators';
-import { Autocomplete } from './Models/autocomplete.model';
+//import { Autocomplete } from './Models/autocomplete.model';
 import { SharedDataService } from 'src/app/services/sharedData.service';
 import { SharedService } from 'src/app/services/shared.service';
 import {select, Store} from '@ngrx/store'; 
@@ -25,7 +25,7 @@ import { FavoriteAdd, FavoriteRemove } from '../favorites/favorite.actions';
 
 export class WheatherDetailsComponent implements OnInit {
 @Input('favSelectedID') favKey:string;  
-  ApiKey =  "m0XQhZB6q0A6ztq0GGWiBJpRRvdDQVXF"; 
+  ApiKey =  "BJLiRte3ZRqdXa6GshrLml2hN5VoeQ2O"; 
   //1 "ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";
   //2 "p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";
   //3 "JBeC9zd7kA6K7RsFkOKDhGo3UPEpnZJM"
@@ -79,8 +79,7 @@ export class WheatherDetailsComponent implements OnInit {
     city: new FormControl(this.selectedCity,Validators.required)
   });
 
-
-  constructor(private http: HttpClient,private router: Router,private route: ActivatedRoute,private weatherDetailsService: WeatherDetailsService,private shareDataService:SharedDataService,private sharedService:SharedService, private store: Store<{ favorites: Favorite[] }>) {    
+    constructor(private http: HttpClient,private router: Router,private route: ActivatedRoute,private weatherDetailsService: WeatherDetailsService,private shareDataService:SharedDataService,private sharedService:SharedService, private store: Store<{ favorites: Favorite[] }>) {    
     
     this.favorites = store.pipe(select('favorites')); 
   
@@ -361,7 +360,7 @@ export class WheatherDetailsComponent implements OnInit {
     this.weatherSearchForm.get('city')
     .valueChanges
     .pipe(
-      filter((data: string) => data.length > 0),
+      filter((data: string) => data.length > 1),
       takeUntil(this.ngUnSubscribe),
       debounceTime(800),
       tap(() => {
@@ -404,7 +403,7 @@ export class WheatherDetailsComponent implements OnInit {
     this.weatherSearchForm.get('city')
     .valueChanges
     .pipe(
-      filter((data: string) => data.length > 0),
+      filter((data: string) => data.length > 1),
       takeUntil(this.ngUnSubscribe),
       debounceTime(800),
       tap(() => {

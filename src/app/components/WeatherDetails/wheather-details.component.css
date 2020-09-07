@@ -22,7 +22,7 @@
 
 
   .example-card {
-        background-color: gainsboro; /* slategray; */
+        background-color: skyblue; /* slategray; */
       }
 
 
@@ -177,3 +177,8 @@
       }
   
       
+
+
+      mat-grid-tile {
+       background: lightblue; 
+      }

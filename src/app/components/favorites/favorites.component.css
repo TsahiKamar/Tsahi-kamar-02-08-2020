@@ -1,3 +1,10 @@
+
+/* cursor: pointer; */
+/* All table */
+.mat-elevation-z8 td:hover {
+  cursor: pointer;
+}
+
 .favorites { 
   margin: 0 0 2em 0; 
   list-style-type: none; 
