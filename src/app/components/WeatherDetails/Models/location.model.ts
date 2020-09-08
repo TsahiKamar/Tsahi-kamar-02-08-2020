@@ -1,5 +1,5 @@
 export class Result {        
-    
+  //### Google Maps ### 
   //results : [
   //   {
         address_components : [
@@ -54,10 +54,10 @@ export class Result {
               southwest : {
                  lat : number,
                  lng : number
-              };//?
-           };//?
+              };
+           };
         };
-        place_id : string;//orig ,
+        place_id : string;
         plus_code: {
            compound_code: string,
            global_code: string
