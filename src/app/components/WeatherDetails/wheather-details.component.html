@@ -25,7 +25,7 @@
 
                     <mat-form-field>
                       <mat-label>City</mat-label>
-                      <input matInput placeholder="City" aria-label="State" [matAutocomplete]="auto" formControlName="city"  (input)="onCityChange($event.target.value)" (keyup)="onKeyUpEvent($event.target.value)"  [pattern]="'^[a-zA-Z \-\']$'" required><!--(input)="onCityChange($event.target.value)" (change)="onChangeEvent($event.target.value)" (keyup)="onKeyUpEvent($event.target.value)"-->
+                      <input matInput placeholder="City" aria-label="State" [matAutocomplete]="auto" formControlName="city"  (input)="onCityChange($event.target.value)" (keyup)="onKeyUpEvent($event.target.value)"  [pattern]="'^[a-zA-Z \-\']$'" required><!--autofocus--><!--(input)="onCityChange($event.target.value)" (change)="onChangeEvent($event.target.value)" (keyup)="onKeyUpEvent($event.target.value)"-->
                       <!--<div *ngIf="weatherSearchForm.controls['city'].invalid && (weatherSearchForm.controls['city'].dirty || weatherSearchForm.controls['city'].touched)" class="alert alert-danger">-->
                         <div *ngIf="weatherSearchForm.controls['city'].errors.required" style="color: red;" >
                             City is required.
@@ -53,19 +53,10 @@
                     <br>             
             
             <br>
-            <!--<button mat-button type="submit" mat-flat-button color="primary">Go</button>-->
-            </form>
 
-            <br>
-            <div class="favbtn" *ngIf="forecasts">
-            <button mat-button mat-flat-button color="{{color}}" (click)="goToFavorites()">
-              <mat-icon>favorite</mat-icon>
-            </button>  
-            </div>   
-          </section>
-          <p>
-          <br>
-          
+          <mat-grid-list cols="2" rowHeight="1:1">
+          <mat-grid-tile>
+
           <div class="wrapper" *ngIf="IsVisible; else serverApiKeyNotAllowed">
             <article class="main">
               <h3><em>Today's Weather - {{todayDay}} {{todayDate}}</em></h3>
@@ -78,25 +69,80 @@
                <input matInput [(ngModel)]="weatherIcon">
             </article>
           </div>
-          <ng-template #serverApiKeyNotAllowed>
-            
-            <pre style="color: red;">Sorry, Server requests limit error !</pre>
+          </mat-grid-tile>
+          </mat-grid-list>
 
+            <div class="container">
+          
+              <div class="form-group">
+                <!--<label>Enter address</label>-->
+                <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()" placeholder="Search Nearest Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search formControlName="search" [hidden]="true">
+              </div>
+              <!--<button mat-button mat-flat-button (click)="findLocationObs()">findLocation</button>-->
+ 
+
+              <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
+                <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
+                  (dragEnd)="markerDragEnd($event)"></agm-marker>
+              </agm-map>
+            
+              <!--<h5>Address: {{address}}</h5>
+              <div>Latitude: {{latitude}}</div>
+              <div>Longitude: {{longitude}}</div>-->
+
+            </div>
+  
+          </form>
+
+
+
+
+            <br>
+            <div class="favbtn" *ngIf="forecasts">
+            <button mat-button mat-flat-button color="{{color}}" (click)="goToFavorites()">
+              <mat-icon>favorite</mat-icon>
+            </button>  
+            </div>   
+          </section>
+          <p>
+          <br>
+          
+          <!--orig here <mat-grid-list cols="2" rowHeight="1:1">
+          <mat-grid-tile>
+
+          <div class="wrapper" *ngIf="IsVisible; else serverApiKeyNotAllowed">
+            <article class="main">
+              <h3><em>Today's Weather - {{todayDay}} {{todayDate}}</em></h3>
+              <br>
+              <mat-label>Weather Description</mat-label>
+              <input matInput [(ngModel)]="weatherText">
+              <mat-label>Temperature</mat-label>
+              <input matInput [(ngModel)]="temperature">
+               <mat-label>Weather Icon</mat-label>
+               <input matInput [(ngModel)]="weatherIcon">
+            </article>
+          </div>
+          </mat-grid-tile>
+          </mat-grid-list>-->
+
+          <br>
+          <ng-template #serverApiKeyNotAllowed>            
+            <pre style="color: red;">Sorry, Server requests limit error !</pre>
           </ng-template>
 
-         <mat-grid-list cols="2" rowHeight="2:1">
+         <mat-grid-list cols="2" rowHeight="1:1">
        
           <ng-container *ngFor="let forecast of forecasts; let i = index" [attr.data-index]="i">
             
             <mat-grid-tile>
             
-            <!--<div class="wrapper5">-->
+            <div class="wrapper5">
   
               <article class="main">
-                <mat-label>Day</mat-label>
-                <input matInput [(ngModel)]="days[i]">
+                <!--<mat-label>Day</mat-label>-->
+                <input matInput [(ngModel)]="days[d.getDay() + i]"><!--days[i] todayDay-->
   
-                <mat-label>Date</mat-label>
+                <!--<mat-label>Date</mat-label>-->
                 <input matInput [(ngModel)]="forecast.Date">
                 <mat-label>Day Phrase</mat-label>
                 <input matInput [(ngModel)]="forecast.Day.IconPhrase">
@@ -110,35 +156,24 @@
                 <input matInput [(ngModel)]="forecast.Temperature.Maximum.Value"><!--[value]="{{(forecast.Temperature.Maximum.Value - 32) * 5 / 9}}"-->
               </article>
   
-              <!--</div>-->
+              </div>
   
             </mat-grid-tile>
 
-            </ng-container>
-  
-  
-       
-           <!--<mat-grid-tile>2</mat-grid-tile>
-           <mat-grid-tile>3</mat-grid-tile>
-           <mat-grid-tile>4</mat-grid-tile>-->
-
+            </ng-container>     
 
          </mat-grid-list>
 
 
-          <h3 *ngIf="forecasts"><em>5 Days Forecast</em></h3>
+<!--          <h3 *ngIf="forecasts"><em>5 Days Forecast</em></h3>
           <br>
-          <!--ORIG <ng-container *ngFor="let forecast of forecasts">-->
           <ng-container *ngFor="let forecast of forecasts; let i = index" [attr.data-index]="i">
 
             
           <div class="wrapper5">
 
             <article class="main">
-              <mat-label>Day</mat-label>
               <input matInput [(ngModel)]="days[i]">
-
-              <mat-label>Date</mat-label>
               <input matInput [(ngModel)]="forecast.Date">
               <mat-label>Day Phrase</mat-label>
               <input matInput [(ngModel)]="forecast.Day.IconPhrase">
@@ -146,18 +181,20 @@
               <input matInput [(ngModel)]="forecast.Night.IconPhrase">
 
               <mat-label>Temperature Min</mat-label>
-              <input matInput [(ngModel)]="forecast.Temperature.Minimum.Value"> <!--[value]="{{(forecast.Temperature.Minimum.Value - 32) * 5 / 9 }}"-->
+              <input matInput [(ngModel)]="forecast.Temperature.Minimum.Value"> 
             
               <mat-label>Temperature Max</mat-label>
-              <input matInput [(ngModel)]="forecast.Temperature.Maximum.Value"><!--[value]="{{(forecast.Temperature.Maximum.Value - 32) * 5 / 9}}"-->
+              <input matInput [(ngModel)]="forecast.Temperature.Maximum.Value">
             </article>
 
             </div>
 
           
-          </ng-container>
+          </ng-container>-->
 
- 
+
+
+   
 
     </mat-card-content>
     <mat-card-actions>

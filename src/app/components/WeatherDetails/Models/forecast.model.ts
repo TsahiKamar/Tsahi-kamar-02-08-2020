@@ -4,7 +4,7 @@ export class Forecast {
     Temperature: { Minimum: {Value:number,Unit:string,UnitType:number},Maximum: {Value:number,Unit:string,UnitType:number}};
     Day: {Icon:number,IconPhrase:string,HasPrecipitation:boolean};
     Night: {Icon:number,IconPhrase:string,HasPrecipitation:boolean};
-    Sources:['AccuWeather'];//?
+    Sources:['AccuWeather'];
     MobileLink:string;
     Link:string;
 

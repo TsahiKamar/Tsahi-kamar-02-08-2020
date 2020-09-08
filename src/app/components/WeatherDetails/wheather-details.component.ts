@@ -1,19 +1,24 @@
-import { Component, OnInit, Input, ɵConsole } from '@angular/core';
+import { Component, OnInit, Input,ViewChild, ElementRef, NgZone, ɵConsole } from '@angular/core';
+import { MapsAPILoader } from '@agm/core';//, MouseEvent tbc
+import {GoogleMapService} from 'src/app/services/googleMap.service';
+
 import { FormControl, FormGroup, Validators, FormArray} from '@angular/forms';
-//import { MatButton } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { WeatherDetailsService } from './weather-details.service';
 import { CurrentConditions } from './Models/currentConditions.model';
 import { Forecast } from './Models/forecast.model';
 import { HttpParams, HttpClient, HttpHeaders } from '@angular/common/http';
 import { debounceTime, tap, switchMap, finalize, map, filter, takeUntil } from 'rxjs/operators';
-//import { Autocomplete } from './Models/autocomplete.model';
 import { SharedDataService } from 'src/app/services/sharedData.service';
 import { SharedService } from 'src/app/services/shared.service';
 import {select, Store} from '@ngrx/store'; 
 import { Observable, Subject } from 'rxjs';
 import { Favorite } from '../favorites/favorite.model';
 import { FavoriteAdd, FavoriteRemove } from '../favorites/favorite.actions';
+import { DatePipe } from '@angular/common';
+
+//https://www.freakyjolly.com/angular-google-maps-using-agm-core/#.X1YVyxMzat8
+//https://console.developers.google.com/projectselector2/apis/dashboard?pli=1&supportedpurview=project
 
 
 @Component({
@@ -25,7 +30,7 @@ import { FavoriteAdd, FavoriteRemove } from '../favorites/favorite.actions';
 
 export class WheatherDetailsComponent implements OnInit {
 @Input('favSelectedID') favKey:string;  
-  ApiKey =  "BJLiRte3ZRqdXa6GshrLml2hN5VoeQ2O"; 
+  ApiKey =  "p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7"; 
   //1 "ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";
   //2 "p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";
   //3 "JBeC9zd7kA6K7RsFkOKDhGo3UPEpnZJM"
@@ -42,6 +47,8 @@ export class WheatherDetailsComponent implements OnInit {
   key: string = "";
   currentCity : string ="Tel Aviv";
   selectedCity: string = "Tel Aviv";
+  lat:number;
+  lng:number;
   favoriteCity:string= "";
   favoriteKey:string = "";
   favoriteNum:number;
@@ -75,20 +82,33 @@ export class WheatherDetailsComponent implements OnInit {
   addIndex:number= 0;
   deleteIndex:number=0;
 
+  //Google Mamps
+  title: string = '';//'AGM project';
+  latitude: number;
+  longitude: number;
+  zoom: number;
+  address: string;
+  private geoCoder;
+  @ViewChild('search',{static:true})//?,{static:true}
+  public searchElementRef: ElementRef;
+
   weatherSearchForm = new FormGroup({
-    city: new FormControl(this.selectedCity,Validators.required)
+    city: new FormControl(this.selectedCity,Validators.required),
+    search: new FormControl('')
   });
 
-    constructor(private http: HttpClient,private router: Router,private route: ActivatedRoute,private weatherDetailsService: WeatherDetailsService,private shareDataService:SharedDataService,private sharedService:SharedService, private store: Store<{ favorites: Favorite[] }>) {    
+    constructor(private http: HttpClient,private router: Router,private route: ActivatedRoute,private weatherDetailsService: WeatherDetailsService,private shareDataService:SharedDataService,private sharedService:SharedService,private googleMapService :GoogleMapService ,private store: Store<{ favorites: Favorite[] }>, private mapsAPILoader: MapsAPILoader,
+      private ngZone: NgZone) {    
     
+
     this.favorites = store.pipe(select('favorites')); 
   
-     // //Send data to add favorite
+     //Send data to add favorite
      this.sharedService.setData('currentWeather',this.temperature);
      
      this.sharedService.setData('name',this.currentCity);
 
-    //get data from favorite grid
+    //Get data from favorite grid
     this.favoriteCity = this.sharedService.getDataValue('city');
     this.favoriteKey = this.sharedService.getDataValue('key');
     this.favoriteNum = this.sharedService.getDataValue('num');
@@ -104,6 +124,9 @@ export class WheatherDetailsComponent implements OnInit {
       this.currentConditionsObs(this.key);
 
       this.selectedCity = this.favoriteCity;
+      
+      this.weatherSearchForm.controls['search'].setValue(this.favoriteCity);
+ 
     }
 
 
@@ -131,17 +154,34 @@ export class WheatherDetailsComponent implements OnInit {
    });
 
 
+
+
+
   }
 
   ngOnInit() {
   
+   
 
     if (this.selectedCity == 'Tel Aviv')
     {
        //Tel Aviv - Default
-       const lat = 32.109333;
-       const lng =  34.855499;
-       this.getLocation(lat,lng);
+       //const lat 
+       this.lat = 32.109333;
+       //const lng 
+       this.lng =  34.855499;
+       
+
+       //this.latitude = lat;
+       //this.longitude = lng;
+
+       this.getLocation(this.lat,this.lng);
+  
+       this.weatherSearchForm.controls['search'].setValue('Tel Aviv');
+       //this.searchElementRef.nativeElement.focus();//?
+       this.findLocationObs();//Google Map
+
+ 
     }
 
     console.log('key :' + this.key);
@@ -192,19 +232,60 @@ export class WheatherDetailsComponent implements OnInit {
     this.sharedService.setData('currentWeather',this.tempature);
     this.sharedService.setData('name',this.GetControlValue(this.weatherSearchForm,'city'));
 
+
+    //let pipe = new DatePipe('en-US');//('en-US'); 
+    //const now = Date.now();
+    //this.todayDate = pipe.transform(now, 'short');
+
     this.todayDate = new Date().toLocaleDateString();
 
-    this.d = new Date(); //orig var d=
+
+    this.d = new Date(); 
     this.todayDay = this.days[this.d.getDay()];    
     
+
+
+     //Google Maps
   
+     //load Places Autocomplete
+     this.mapsAPILoader.load().then(() => {
+      //Device location  this.setCurrentLocation();
+      this.geoCoder = new google.maps.Geocoder;
+
+      //this.weatherSearchForm.get('search')..controls['search'].click();
+
+      let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement);
+      //temp here
+      //this.searchElementRef.nativeElement.focus();
+
+      console.log('autocomplete :' + JSON.stringify(autocomplete));
+
+      autocomplete.addListener("place_changed", () => {
+        this.ngZone.run(() => {
+          //get the place result
+          let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+          console.log('google.maps.places :' + JSON.stringify(google.maps.places));
+          console.log('place:' + JSON.stringify(place));
+          //verify result
+          if (place.geometry === undefined || place.geometry === null) {
+            return;
+          }
+
+          //set latitude, longitude and zoom
+          this.latitude = place.geometry.location.lat();
+          this.longitude = place.geometry.location.lng();
+          this.zoom = 12;
+        });
+      });
+    });
+
      
   }
 
  public getLocation(lat:number,lng:number){
      try {
      this.weatherDetailsService.geoPosition(`${lat},${lng}`).subscribe(data => {
-      console.log('Geoposition client data:' + JSON.stringify(data)); 
+      console.log('GeoPosition client data:' + JSON.stringify(data)); 
       this.key = data;
       if (this.key != undefined && this.key != null && this.key !="")
       {
@@ -266,12 +347,15 @@ export class WheatherDetailsComponent implements OnInit {
     try {
       response = this.weatherDetailsService.fiveDaysForecasts(locationKey)
       
-      //for (let i = 0; i < response.length; i++) {
-      //  response[i].Temperature.Minimum.Value = (response[i].Temperature.Minimum.Value - 32) * 5 / 9 ;
-      //  response[i].Temperature.Maximum.Value = (response[i].Temperature.Maximum.Value - 32) * 5 / 9 ;
-      //  console.log('forecasts  response[i].Temperature.Maximum.Value celcious:' + response[i].Temperature.Maximum.Value );
-      //}
-
+      // for (let i = 0; i < data.length; i++) {
+      //   let date = data[i].Date.substr(0,10); 
+      //   data[i].Date = date; 
+      //   let MinCelcious  = (data[i].Temperature.Minimum.Value - 32) * 5 / 9 ;
+      //   data[i].Temperature.Minimum.Value = MinCelcious;//(data[i].Temperature.Minimum.Value - 32) * 5 / 9 ;
+      //   let MaxCelcious = (data[i].Temperature.Maximum.Value - 32) * 5 / 9 ;
+      //   data[i].Temperature.Maximum.Value = MaxCelcious ; //(data[i].Temperature.Maximum.Value - 32) * 5 / 9 ;
+      //   }
+  
       this.forecasts = response;
         console.log('5days client forecasts :' + JSON.stringify(this.forecasts));
       
@@ -288,13 +372,19 @@ export class WheatherDetailsComponent implements OnInit {
      console.log('fiveDaysForcastObs client data:' + JSON.stringify(data)); 
      
      for (let i = 0; i < data.length; i++) {
+      let date = data[i].Date.substr(0,10); 
+      data[i].Date = date; 
       let MinCelcious  = (data[i].Temperature.Minimum.Value - 32) * 5 / 9 ;
       data[i].Temperature.Minimum.Value = MinCelcious;//(data[i].Temperature.Minimum.Value - 32) * 5 / 9 ;
       let MaxCelcious = (data[i].Temperature.Maximum.Value - 32) * 5 / 9 ;
       data[i].Temperature.Maximum.Value = MaxCelcious ; //(data[i].Temperature.Maximum.Value - 32) * 5 / 9 ;
-    }
+      }
 
      this.forecasts = data;
+
+     //here?
+ this.searchElementRef.nativeElement.focus();
+
     });
    }
    catch(e)
@@ -340,6 +430,9 @@ export class WheatherDetailsComponent implements OnInit {
        this.currentConditionsObs(this.key);
        this.fiveDaysForcastObs(this.key); 
        this.shareDataService.changeMessage(this.key);
+
+       this.weatherSearchForm.controls['search'].setValue(this.weatherSearchForm.get('city').value);
+ 
     }
   }
 
@@ -347,11 +440,10 @@ export class WheatherDetailsComponent implements OnInit {
     this.currentCity = newValue;
     this.selectedCity = newValue;
     console.log('onCityChange :' + newValue);
+    this.findLocationObs();
   }
 
   onChangeEvent(searchValue: string) {
-    //if (this.weatherSearchForm.get('city').. controls['city'].length)
-
 
     console.log('onChangeEvent searchValue :' + searchValue);
     this.color = "primary";
@@ -481,4 +573,93 @@ displayFn(value) {
   return value;
 }
 
+ //Google Maps
+ // Get Current Location Coordinates
+//  private setCurrentLocation() {
+//   if ('geolocation' in navigator) {
+//     navigator.geolocation.getCurrentPosition((position) => {
+//       this.latitude = position.coords.latitude;
+//       this.longitude = position.coords.longitude;
+//       this.zoom = 15;
+//     });
+//   }
+// }
+
+// Get DEVICE Current Location Coordinates
+private setCurrentLocation() {
+  if ('geolocation' in navigator) {
+    navigator.geolocation.getCurrentPosition((position) => {
+      this.latitude = position.coords.latitude;
+      this.longitude = position.coords.longitude;
+      this.zoom = 8;
+      this.getAddress(this.latitude, this.longitude); //Kfar-saba ? 
+    });
+  }
 }
+
+//ORIG MouseEvent
+markerDragEnd($event: any) {
+  console.log($event);
+  this.latitude = $event.coords.lat;
+  this.longitude = $event.coords.lng;
+  this.getAddress(this.latitude, this.longitude);
+}
+
+getAddress(latitude, longitude) {
+  this.geoCoder.geocode({ 'location': { lat: latitude, lng: longitude } }, (results, status) => {
+    console.log(results);
+    console.log(status);
+    if (status === 'OK') {
+      if (results[0]) {
+        this.zoom = 12;
+        this.address = results[0].formatted_address;
+        console.log('geocode results[0].formatted_address :' + results[0].formatted_address);
+        console.log('geocode results[1].formatted_address :' + results[1].formatted_address);
+        console.log('geocode results[2].formatted_address :' + results[2].formatted_address);
+
+      } else {
+        window.alert('No results found');
+      }
+    } else {
+      window.alert('Geocoder failed due to: ' + status);
+    }
+
+  });
+}
+
+
+findLocation(){
+
+  var results  = this.googleMapService.findLocation(this.selectedCity);
+  
+  this.latitude = results[0].geometry.location.lat();
+  this.longitude = results[0].geometry.location.lng();
+  this.zoom = 12;
+  alert(JSON.stringify(results[0].geometry.location));
+
+
+}
+
+public findLocationObs(){
+  try {
+    this.googleMapService.findLocationObs(this.selectedCity).subscribe(results => {
+   
+    this.latitude = results[0].geometry.location.lat
+    this.longitude = results[0].geometry.location.lng;
+    this.zoom = 12;
+
+  });
+ }
+ catch(e)
+ {
+  this.message = 'Find Location Obs Service error ! ' + e;
+
+   console.log('findLocationObs client failed ! exception :' + e);
+ }
+}
+
+
+
+
+}
+

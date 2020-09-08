@@ -21,6 +21,8 @@ import { WeatherDetailsService } from './components/WeatherDetails/weather-detai
 import { SharedDataService } from './services/sharedData.service';
 import { SharedService } from './services/shared.service';
 
+import { AgmCoreModule } from '@agm/core';//Google Maps
+
 
 import {A11yModule} from '@angular/cdk/a11y';
 import {BidiModule} from '@angular/cdk/bidi';
@@ -162,8 +164,11 @@ export class MaterialModule {}
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    StoreModule.forRoot({ favorites: FavoriteReducer }) 
-
+    StoreModule.forRoot({ favorites: FavoriteReducer }),
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyAdnouwwu_BoGw7OD5zyvll1NKF5SOaS4Q',
+      libraries: ['places']
+    })
   ],
   exports:[],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
