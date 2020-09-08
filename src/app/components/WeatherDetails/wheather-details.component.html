@@ -21,6 +21,7 @@
         
           <section class="example-section">
      
+    
                 <form [formGroup]="weatherSearchForm" (ngSubmit)="go()">
 
                     <mat-form-field>
@@ -32,9 +33,9 @@
                         </div>
                       <!--</div>-->
 
-                      <!--<div *ngIf="city.errors?.pattern">
-                        City is not valid.
-                      </div> -->
+                      
+ 
+
 
                         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)"><!--ORIG [displayWith]="displayFn"-->
                         
@@ -54,43 +55,8 @@
             
             <br>
 
-          <mat-grid-list cols="2" rowHeight="1:1">
-          <mat-grid-tile>
-
-          <div class="wrapper" *ngIf="IsVisible; else serverApiKeyNotAllowed">
-            <article class="main">
-              <h3><em>Today's Weather - {{todayDay}} {{todayDate}}</em></h3>
-              <br>
-              <mat-label>Weather Description</mat-label>
-              <input matInput [(ngModel)]="weatherText">
-              <mat-label>Temperature</mat-label>
-              <input matInput [(ngModel)]="temperature">
-               <mat-label>Weather Icon</mat-label>
-               <input matInput [(ngModel)]="weatherIcon">
-            </article>
-          </div>
-          </mat-grid-tile>
-          </mat-grid-list>
-
-            <div class="container">
-          
-              <div class="form-group">
-                <!--<label>Enter address</label>-->
-                <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()" placeholder="Search Nearest Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search formControlName="search" [hidden]="true">
-              </div>
               <!--<button mat-button mat-flat-button (click)="findLocationObs()">findLocation</button>-->
- 
 
-              <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
-                <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
-                  (dragEnd)="markerDragEnd($event)"></agm-marker>
-              </agm-map>
-            
-              <!--<h5>Address: {{address}}</h5>
-              <div>Latitude: {{latitude}}</div>
-              <div>Longitude: {{longitude}}</div>-->
-
-            </div>
   
           </form>
 
@@ -107,7 +73,7 @@
           <p>
           <br>
           
-          <!--orig here <mat-grid-list cols="2" rowHeight="1:1">
+          <mat-grid-list cols="2" rowHeight="1:1">
           <mat-grid-tile>
 
           <div class="wrapper" *ngIf="IsVisible; else serverApiKeyNotAllowed">
@@ -123,12 +89,56 @@
             </article>
           </div>
           </mat-grid-tile>
-          </mat-grid-list>-->
+          <mat-grid-tile>
+            <div class="container">
+          
+              <div class="form-group">
+                <!--<label>Enter address</label>-->
+                <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()" placeholder="Search Nearest Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search [hidden]="true"><!--formControlName="search"-->
+              </div>
+  
+  
+              <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
+                <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
+                  (dragEnd)="markerDragEnd($event)"></agm-marker>
+              </agm-map>
+            
+              <!--<h5>Address: {{address}}</h5>
+              <div>Latitude: {{latitude}}</div>
+              <div>Longitude: {{longitude}}</div>-->
+  
+            </div>
+  
+          </mat-grid-tile>
+          
+          </mat-grid-list>
 
           <br>
           <ng-template #serverApiKeyNotAllowed>            
             <pre style="color: red;">Sorry, Server requests limit error !</pre>
           </ng-template>
+
+          <!--orig-->
+          <!-- <div class="container">
+          
+            <div class="form-group">
+              <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()" placeholder="Search Nearest Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search [hidden]="true">
+            </div>
+
+
+            <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
+              <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
+                (dragEnd)="markerDragEnd($event)"></agm-marker>
+            </agm-map>
+          
+            <h5>Address: {{address}}</h5>
+            <div>Latitude: {{latitude}}</div>
+            <div>Longitude: {{longitude}}</div>
+
+          </div>
+ -->
+
+
 
          <mat-grid-list cols="2" rowHeight="1:1">
        

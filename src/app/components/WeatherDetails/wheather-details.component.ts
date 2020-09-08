@@ -30,7 +30,7 @@ import { DatePipe } from '@angular/common';
 
 export class WheatherDetailsComponent implements OnInit {
 @Input('favSelectedID') favKey:string;  
-  ApiKey =  "p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7"; 
+  ApiKey =  "ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ"; 
   //1 "ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";
   //2 "p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";
   //3 "JBeC9zd7kA6K7RsFkOKDhGo3UPEpnZJM"
@@ -93,8 +93,8 @@ export class WheatherDetailsComponent implements OnInit {
   public searchElementRef: ElementRef;
 
   weatherSearchForm = new FormGroup({
-    city: new FormControl(this.selectedCity,Validators.required),
-    search: new FormControl('')
+    city: new FormControl(this.selectedCity,Validators.required)//,
+    //search: new FormControl('')
   });
 
     constructor(private http: HttpClient,private router: Router,private route: ActivatedRoute,private weatherDetailsService: WeatherDetailsService,private shareDataService:SharedDataService,private sharedService:SharedService,private googleMapService :GoogleMapService ,private store: Store<{ favorites: Favorite[] }>, private mapsAPILoader: MapsAPILoader,
@@ -125,7 +125,8 @@ export class WheatherDetailsComponent implements OnInit {
 
       this.selectedCity = this.favoriteCity;
       
-      this.weatherSearchForm.controls['search'].setValue(this.favoriteCity);
+      this.findLocationObs();
+      //this.weatherSearchForm.controls['search'].setValue(this.favoriteCity);
  
     }
 
@@ -177,7 +178,7 @@ export class WheatherDetailsComponent implements OnInit {
 
        this.getLocation(this.lat,this.lng);
   
-       this.weatherSearchForm.controls['search'].setValue('Tel Aviv');
+       //this.weatherSearchForm.controls['search'].setValue('Tel Aviv');
        //this.searchElementRef.nativeElement.focus();//?
        this.findLocationObs();//Google Map
 
@@ -431,8 +432,10 @@ export class WheatherDetailsComponent implements OnInit {
        this.fiveDaysForcastObs(this.key); 
        this.shareDataService.changeMessage(this.key);
 
-       this.weatherSearchForm.controls['search'].setValue(this.weatherSearchForm.get('city').value);
- 
+       //this.weatherSearchForm.controls['search'].setValue(this.weatherSearchForm.get('city').value);
+       this.findLocationObs();
+
+
     }
   }
 
@@ -440,7 +443,6 @@ export class WheatherDetailsComponent implements OnInit {
     this.currentCity = newValue;
     this.selectedCity = newValue;
     console.log('onCityChange :' + newValue);
-    this.findLocationObs();
   }
 
   onChangeEvent(searchValue: string) {

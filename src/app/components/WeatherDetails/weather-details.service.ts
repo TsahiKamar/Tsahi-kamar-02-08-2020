@@ -21,7 +21,7 @@ export class WeatherDetailsService {
   //3 JBeC9zd7kA6K7RsFkOKDhGo3UPEpnZJM
   //4 "m0XQhZB6q0A6ztq0GGWiBJpRRvdDQVXF"
   //5 BJLiRte3ZRqdXa6GshrLml2hN5VoeQ2O
-  ApiKey = "p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";
+  ApiKey = "ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";
   
   constructor(private http: HttpClient) { }
 // http://dataservice.accuweather.com/currentconditions/v1/{locationKey}

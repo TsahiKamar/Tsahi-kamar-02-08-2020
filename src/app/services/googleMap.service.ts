@@ -41,7 +41,6 @@ public findLocationObs(address:string):Observable<any>{
    
         return this.http.get(url)
         .pipe(
-              //ORIG map((results: Result[]) => results) //forcasts["DailyForecasts"]
               map((results: Result[]) => results["results"])
 
              )
