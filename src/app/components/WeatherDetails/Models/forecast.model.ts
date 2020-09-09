@@ -1,5 +1,5 @@
 export class Forecast {        
-    Date:string;//?
+    Date:string;
     EpocDate:string;
     Temperature: { Minimum: {Value:number,Unit:string,UnitType:number},Maximum: {Value:number,Unit:string,UnitType:number}};
     Day: {Icon:number,IconPhrase:string,HasPrecipitation:boolean};
@@ -7,9 +7,6 @@ export class Forecast {
     Sources:['AccuWeather'];
     MobileLink:string;
     Link:string;
-
-    //my
-    weatherImage:any;
 
   }
 

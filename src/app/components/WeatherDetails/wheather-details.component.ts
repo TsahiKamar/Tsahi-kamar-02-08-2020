@@ -33,7 +33,7 @@ import { DatePipe } from '@angular/common';
 
 export class WheatherDetailsComponent implements OnInit {
 @Input('favSelectedID') favKey:string;  
-  ApiKey =  "p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7"; 
+  ApiKey =  "JBeC9zd7kA6K7RsFkOKDhGo3UPEpnZJM"; 
   //1 "ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";
   //2 "p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";
   //3 "JBeC9zd7kA6K7RsFkOKDhGo3UPEpnZJM"
@@ -91,13 +91,13 @@ export class WheatherDetailsComponent implements OnInit {
   deleteIndex:number=0;
 
   //Google Mamps
-  title: string = '';//'AGM project';
+  title: string = '';
   latitude: number;
   longitude: number;
   zoom: number;
   address: string;
   private geoCoder;
-  @ViewChild('search',{static:true})//?,{static:true}
+  @ViewChild('search',{static:true})
   public searchElementRef: ElementRef;
 
   weatherSearchForm = new FormGroup({
@@ -107,8 +107,6 @@ export class WheatherDetailsComponent implements OnInit {
 
     constructor(private http: HttpClient,private router: Router,private route: ActivatedRoute,private weatherDetailsService: WeatherDetailsService,private shareDataService:SharedDataService,private sharedService:SharedService,private googleMapService :GoogleMapService ,private store: Store<{ favorites: Favorite[] }>, private mapsAPILoader: MapsAPILoader,
       private ngZone: NgZone) {    
-    
-//this.weatherImage = "/assets/1.ico";
 
     this.favorites = store.pipe(select('favorites')); 
   
@@ -386,21 +384,17 @@ export class WheatherDetailsComponent implements OnInit {
      console.log('fiveDaysForcastObs client data:' + JSON.stringify(data)); 
      
      for (let i = 0; i < data.length; i++) {
-      data[i].weatherImage=undefined;
       let date = data[i].Date.substr(0,10); 
       data[i].Date = date; 
       let MinCelcious  = (data[i].Temperature.Minimum.Value - 32) * 5 / 9 ;
-      data[i].Temperature.Minimum.Value = MinCelcious;//(data[i].Temperature.Minimum.Value - 32) * 5 / 9 ;
+      data[i].Temperature.Minimum.Value = MinCelcious;
       let MaxCelcious = (data[i].Temperature.Maximum.Value - 32) * 5 / 9 ;
-      data[i].Temperature.Maximum.Value = MaxCelcious ; //(data[i].Temperature.Maximum.Value - 32) * 5 / 9 ;
-     
-      data[i].weatherImage = "/assets/" + data[0].Day.Icon + ".ico";
+      data[i].Temperature.Maximum.Value = MaxCelcious ;      
+      data[i].MobileLink = "/assets/" + data[i].Day.Icon + ".ico";
     }
 
      this.forecasts = data;
 
-     //here?
- this.searchElementRef.nativeElement.focus();
 
     });
    }

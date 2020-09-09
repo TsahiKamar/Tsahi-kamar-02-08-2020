@@ -73,7 +73,7 @@
           <mat-grid-tile>
 
           <div class="wrapper" *ngIf="IsVisible; else serverApiKeyNotAllowed">
-            <article class="main">
+            <article class="main" style="background: yellow;">
               <h6><em>Today's Weather - {{todayDay}} {{todayDate}}</em></h6>
               <br>
               <mat-label>Weather Description</mat-label>
@@ -83,7 +83,7 @@
                <!--<mat-label>Weather Icon</mat-label>
                <input matInput [(ngModel)]="weatherIcon" [hidden]="false">-->
            
-               <img src="{{todayImage}}" height="50" width="50" *ngIf="todayImage !== undefined" />
+               <img src="{{todayImage}}" onerror="this.onerror=null;this.hidden='true';" height="50" width="50" />
               </article>
           </div>
           </mat-grid-tile>
@@ -163,7 +163,7 @@
                 <mat-label>Temperature Max</mat-label>
                 <input matInput [(ngModel)]="forecast.Temperature.Maximum.Value"><!--[value]="{{(forecast.Temperature.Maximum.Value - 32) * 5 / 9}}"-->
           
-                <img src="forecast.weatherImage" height="50" width="50" *ngIf="forcast.weatherImage !== undefined" /><!--[hidden]="{{forecast.weatherImage==undefined}}"-->
+                <img src="{{forecast.MobileLink}}" onerror="this.onerror=null;this.hidden='true';" height="50" width="50" />
 
               </article>
   
