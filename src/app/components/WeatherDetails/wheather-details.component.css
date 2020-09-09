@@ -181,8 +181,9 @@
 
       mat-grid-tile {
        background: lightblue; 
+      
       }
 
       agm-map {
-        height: 300px;
+        height: 300px;/*orig 300 */
     }

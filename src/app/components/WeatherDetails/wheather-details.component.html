@@ -60,9 +60,6 @@
   
           </form>
 
-
-
-
             <br>
             <div class="favbtn" *ngIf="forecasts">
             <button mat-button mat-flat-button color="{{color}}" (click)="goToFavorites()">
@@ -70,23 +67,24 @@
             </button>  
             </div>   
           </section>
-          <p>
-          <br>
-          
-          <mat-grid-list cols="2" rowHeight="2:1">
+          <!--<p>-->
+          <!--<br>-->
+          <mat-grid-list cols="2" rowHeight="250px:100px">
           <mat-grid-tile>
 
           <div class="wrapper" *ngIf="IsVisible; else serverApiKeyNotAllowed">
             <article class="main">
-              <h3><em>Today's Weather - {{todayDay}} {{todayDate}}</em></h3>
+              <h6><em>Today's Weather - {{todayDay}} {{todayDate}}</em></h6>
               <br>
               <mat-label>Weather Description</mat-label>
               <input matInput [(ngModel)]="weatherText">
               <mat-label>Temperature</mat-label>
               <input matInput [(ngModel)]="temperature">
-               <mat-label>Weather Icon</mat-label>
-               <input matInput [(ngModel)]="weatherIcon">
-            </article>
+               <!--<mat-label>Weather Icon</mat-label>
+               <input matInput [(ngModel)]="weatherIcon" [hidden]="false">-->
+           
+               <img src="{{todayImage}}" height="50" width="50" *ngIf="todayImage !== undefined" />
+              </article>
           </div>
           </mat-grid-tile>
           <mat-grid-tile>
@@ -140,7 +138,7 @@
 
 
 
-         <mat-grid-list cols="2" rowHeight="1:1">
+         <mat-grid-list cols="2" rowHeight="250px"><!--2:1-->
        
           <ng-container *ngFor="let forecast of forecasts; let i = index" [attr.data-index]="i">
             
@@ -164,6 +162,9 @@
               
                 <mat-label>Temperature Max</mat-label>
                 <input matInput [(ngModel)]="forecast.Temperature.Maximum.Value"><!--[value]="{{(forecast.Temperature.Maximum.Value - 32) * 5 / 9}}"-->
+          
+                <img src="forecast.weatherImage" height="50" width="50" *ngIf="forcast.weatherImage !== undefined" /><!--[hidden]="{{forecast.weatherImage==undefined}}"-->
+
               </article>
   
               </div>

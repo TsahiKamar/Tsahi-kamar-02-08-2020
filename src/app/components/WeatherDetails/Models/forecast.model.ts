@@ -8,6 +8,9 @@ export class Forecast {
     MobileLink:string;
     Link:string;
 
+    //my
+    weatherImage:any;
+
   }
 
 

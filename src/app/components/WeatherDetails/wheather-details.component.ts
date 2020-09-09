@@ -20,6 +20,9 @@ import { DatePipe } from '@angular/common';
 //https://www.freakyjolly.com/angular-google-maps-using-agm-core/#.X1YVyxMzat8
 //https://console.developers.google.com/projectselector2/apis/dashboard?pli=1&supportedpurview=project
 
+//icons
+//https://developer.accuweather.com/weather-icons
+//https://www.iconarchive.com/search?q=accu+weather&res=small&page=1
 
 @Component({
   selector: 'app-wheather-details',
@@ -30,7 +33,7 @@ import { DatePipe } from '@angular/common';
 
 export class WheatherDetailsComponent implements OnInit {
 @Input('favSelectedID') favKey:string;  
-  ApiKey =  "m0XQhZB6q0A6ztq0GGWiBJpRRvdDQVXF"; 
+  ApiKey =  "p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7"; 
   //1 "ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";
   //2 "p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";
   //3 "JBeC9zd7kA6K7RsFkOKDhGo3UPEpnZJM"
@@ -57,6 +60,11 @@ export class WheatherDetailsComponent implements OnInit {
   weatherText: string;
   temperature:number;
   weatherIcon:any;
+  todayImage:any;
+
+  //weatherImage:any;
+
+
   IsVisible:boolean= false;
 
   //5 days
@@ -100,6 +108,7 @@ export class WheatherDetailsComponent implements OnInit {
     constructor(private http: HttpClient,private router: Router,private route: ActivatedRoute,private weatherDetailsService: WeatherDetailsService,private shareDataService:SharedDataService,private sharedService:SharedService,private googleMapService :GoogleMapService ,private store: Store<{ favorites: Favorite[] }>, private mapsAPILoader: MapsAPILoader,
       private ngZone: NgZone) {    
     
+//this.weatherImage = "/assets/1.ico";
 
     this.favorites = store.pipe(select('favorites')); 
   
@@ -328,11 +337,15 @@ export class WheatherDetailsComponent implements OnInit {
   
   public currentConditionsObs(locationKey:string): any{
     try {
+    this.todayImage=undefined;  
     this.weatherDetailsService.currentconditionsObs(locationKey).subscribe(data => {
      console.log('currentConditionsObs client data:' + JSON.stringify(data)); 
      this.temperature = data[0].Temperature.Metric.Value;//Celcious
      this.weatherText = data[0].WeatherText;
      this.weatherIcon = data[0].WeatherIcon;
+
+     this.todayImage = "/assets/" + data[0].WeatherIcon + ".ico";
+
      this.IsVisible = true;
     });
    }
@@ -373,13 +386,16 @@ export class WheatherDetailsComponent implements OnInit {
      console.log('fiveDaysForcastObs client data:' + JSON.stringify(data)); 
      
      for (let i = 0; i < data.length; i++) {
+      data[i].weatherImage=undefined;
       let date = data[i].Date.substr(0,10); 
       data[i].Date = date; 
       let MinCelcious  = (data[i].Temperature.Minimum.Value - 32) * 5 / 9 ;
       data[i].Temperature.Minimum.Value = MinCelcious;//(data[i].Temperature.Minimum.Value - 32) * 5 / 9 ;
       let MaxCelcious = (data[i].Temperature.Maximum.Value - 32) * 5 / 9 ;
       data[i].Temperature.Maximum.Value = MaxCelcious ; //(data[i].Temperature.Maximum.Value - 32) * 5 / 9 ;
-      }
+     
+      data[i].weatherImage = "/assets/" + data[0].Day.Icon + ".ico";
+    }
 
      this.forecasts = data;
 
