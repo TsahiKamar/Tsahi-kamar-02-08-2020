@@ -62,7 +62,7 @@
 
             <br>
             <div class="favbtn" *ngIf="forecasts">
-            <button mat-button mat-flat-button color="{{color}}" (click)="goToFavorites()">
+            <button mat-button mat-flat-button color="{{color}}" (click)="goToFavorites()" [disabled]="favBtnDisable">
               <mat-icon>favorite</mat-icon>
             </button>  
             </div>   

@@ -33,7 +33,7 @@ import { DatePipe } from '@angular/common';
 
 export class WheatherDetailsComponent implements OnInit {
 @Input('favSelectedID') favKey:string;  
-  ApiKey =  "JBeC9zd7kA6K7RsFkOKDhGo3UPEpnZJM"; 
+  ApiKey =  "ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ"; 
   //1 "ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";
   //2 "p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";
   //3 "JBeC9zd7kA6K7RsFkOKDhGo3UPEpnZJM"
@@ -55,6 +55,8 @@ export class WheatherDetailsComponent implements OnInit {
   favoriteCity:string= "";
   favoriteKey:string = "";
   favoriteNum:number;
+
+  favBtnDisable:boolean = false;
 
   //currentCondition
   weatherText: string;
@@ -436,6 +438,7 @@ export class WheatherDetailsComponent implements OnInit {
     console.log('autocomplete selection key :' + key);
     if (this.key != undefined && this.key != null && this.key !="")
     {  
+      this.favBtnDisable = false;
        this.currentCity = this.weatherSearchForm.get('city').value;   
        this.selectedCity =  this.weatherSearchForm.get('city').value;   
        this.currentConditionsObs(this.key);
@@ -450,6 +453,7 @@ export class WheatherDetailsComponent implements OnInit {
   }
 
   onCityChange(newValue:string){
+    this.favBtnDisable = true;
     this.currentCity = newValue;
     this.selectedCity = newValue;
     console.log('onCityChange :' + newValue);
