@@ -74,7 +74,7 @@
 
           <div class="wrapper" *ngIf="IsVisible; else serverApiKeyNotAllowed">
             <article class="main" style="background: yellow;">
-              <h6><em>Today's Weather - {{todayDay}} {{todayDate}}</em></h6>
+              <h6><em>Current Weather - {{todayDay}} {{todayDate}}</em></h6>
               <br>
               <mat-label>Weather Description</mat-label>
               <input matInput [(ngModel)]="weatherText">
@@ -138,7 +138,7 @@
 
 
 
-         <mat-grid-list cols="2" rowHeight="250px"><!--2:1-->
+         <mat-grid-list cols="2" rowHeight="330px"><!--2:1-->
        
           <ng-container *ngFor="let forecast of forecasts; let i = index" [attr.data-index]="i">
             
@@ -147,7 +147,10 @@
             <div class="wrapper5">
   
               <article class="main">
-                <!--<mat-label>Day</mat-label>-->
+                
+                <img src="{{forecast.MobileLink}}" onerror="this.onerror=null;this.hidden='true';" height="50" width="50" />
+
+                  <!--<mat-label>Day</mat-label>-->
                 <input matInput [(ngModel)]="days[d.getDay() + i]"><!--days[i] todayDay-->
   
                 <!--<mat-label>Date</mat-label>-->
@@ -162,8 +165,6 @@
               
                 <mat-label>Temperature Max</mat-label>
                 <input matInput [(ngModel)]="forecast.Temperature.Maximum.Value"><!--[value]="{{(forecast.Temperature.Maximum.Value - 32) * 5 / 9}}"-->
-          
-                <!--<img src="{{forecast.MobileLink}}" onerror="this.onerror=null;this.hidden='true';" height="50" width="50" />-->
 
               </article>
   

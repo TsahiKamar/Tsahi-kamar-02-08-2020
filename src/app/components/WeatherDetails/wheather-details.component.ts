@@ -33,7 +33,7 @@ import { DatePipe } from '@angular/common';
 
 export class WheatherDetailsComponent implements OnInit {
 @Input('favSelectedID') favKey:string;  
-  ApiKey =  "BJLiRte3ZRqdXa6GshrLml2hN5VoeQ2O"; 
+  ApiKey =  "JBeC9zd7kA6K7RsFkOKDhGo3UPEpnZJM"; 
   //1 "ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";
   //2 "p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";
   //3 "JBeC9zd7kA6K7RsFkOKDhGo3UPEpnZJM"
