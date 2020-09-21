@@ -115,7 +115,7 @@
       font-weight: bold;
       text-align: center;*/
       width: 200px;
-      height: 200px;
+      height: 260px;/* 200 */
       flex-direction: column;
       flex-wrap: wrap;
 
@@ -137,7 +137,7 @@
       
       .main {
         text-align: left;
-        background: greenyellow;
+        /*background: greenyellow;*/
       }
       
       .aside-1 {

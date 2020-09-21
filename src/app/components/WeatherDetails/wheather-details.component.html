@@ -138,19 +138,20 @@
 
 
 
-         <mat-grid-list cols="2" rowHeight="330px"><!--2:1-->
+         <mat-grid-list cols="2" rowHeight="330"><!--2:1-->
        
           <ng-container *ngFor="let forecast of forecasts; let i = index" [attr.data-index]="i">
             
             <mat-grid-tile>
             
-            <div class="wrapper5">
-  
+            <div class="wrapper5" [ngStyle]="{'background': days[d.getDay() + i] == todayDay ? 'yellow' : 'greenyellow'}">
+              <!--<div [style.background-color]="days[d.getDay() + i] == todayDay ? 'yellow' : 'greenyellow' >-->
+
               <article class="main">
                 
                 <img src="{{forecast.MobileLink}}" onerror="this.onerror=null;this.hidden='true';" height="40" width="40" />
 
-                  <!--<mat-label>Day</mat-label>-->
+                 <!--<mat-label>Day</mat-label>-->
                 <input matInput [(ngModel)]="days[d.getDay() + i]"><!--days[i] todayDay-->
   
                 <!--<mat-label>Date</mat-label>-->
@@ -166,7 +167,7 @@
                 <mat-label>Temperature Max</mat-label>
                 <input matInput [(ngModel)]="forecast.Temperature.Maximum.Value"><!--[value]="{{(forecast.Temperature.Maximum.Value - 32) * 5 / 9}}"-->
 
-              </article>
+              </article>             
   
               </div>
   
