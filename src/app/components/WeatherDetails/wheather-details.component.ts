@@ -341,7 +341,7 @@ export class WheatherDetailsComponent implements OnInit {
     this.todayImage=undefined;  
     this.weatherDetailsService.currentconditionsObs(locationKey).subscribe(data => {
      console.log('currentConditionsObs client data:' + JSON.stringify(data)); 
-     this.temperature = data[0].Temperature.Metric.Value;//Celcious
+     this.temperature = Math.round(data[0].Temperature.Metric.Value);//Celcious
      this.weatherText = data[0].WeatherText;
      this.weatherIcon = data[0].WeatherIcon;
 
@@ -389,9 +389,9 @@ export class WheatherDetailsComponent implements OnInit {
      for (let i = 0; i < data.length; i++) {
       let date = data[i].Date.substr(0,10); 
       data[i].Date = date; 
-      let MinCelcious  = (data[i].Temperature.Minimum.Value - 32) * 5 / 9 ;
+      let MinCelcious  = Math.round((data[i].Temperature.Minimum.Value - 32) * 5 / 9 );
       data[i].Temperature.Minimum.Value = MinCelcious;
-      let MaxCelcious = (data[i].Temperature.Maximum.Value - 32) * 5 / 9 ;
+      let MaxCelcious = Math.round((data[i].Temperature.Maximum.Value - 32) * 5 / 9 );
       data[i].Temperature.Maximum.Value = MaxCelcious ;      
       data[i].MobileLink = "/assets/" + data[i].Day.Icon + ".ico";
     }
