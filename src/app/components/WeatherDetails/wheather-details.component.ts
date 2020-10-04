@@ -347,7 +347,7 @@ export class WheatherDetailsComponent implements OnInit {
 
      this.todayImage = "/assets/" + data[0].WeatherIcon + ".ico";
 
-     this.IsVisible = true;
+     this.IsVisible = true;//
     });
    }
    catch(e)
