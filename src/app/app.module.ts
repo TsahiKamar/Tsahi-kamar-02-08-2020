@@ -12,6 +12,9 @@ import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
+import { MasterComponent } from './components/master/master.component';
+import { TreeComponent } from './components/tree/tree.component';
+
 import { WheatherDetailsComponent } from './components/WeatherDetails/wheather-details.component';
 import { FavoritesComponent } from './components/favorites/favorites.component';
 
@@ -34,6 +37,9 @@ import {CdkStepperModule} from '@angular/cdk/stepper';
 import {CdkTableModule} from '@angular/cdk/table';
 import {CdkTreeModule} from '@angular/cdk/tree';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+
+//import {FlatTreeControl} from '@angular/cdk/tree';
+//import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 
 
 //Material
@@ -73,7 +79,10 @@ import {
   MatTabsModule,
   MatToolbarModule,
   MatTooltipModule,
-  MatTreeModule
+  MatTreeModule,
+
+  //MatTreeFlatDataSource,
+  //MatTreeFlattener
 
 } from '@angular/material';
 
@@ -95,6 +104,7 @@ import {
     CdkStepperModule,
     CdkTableModule,
     CdkTreeModule,
+    //FlatTreeControl,
     DragDropModule,
 
     // Material
@@ -135,7 +145,7 @@ import {
     MatTooltipModule,
     MatTreeModule
   ],
-  declarations: [],
+  declarations: [MasterComponent, TreeComponent],
   imports: [StoreModule.forRoot(reducers, { 
       metaReducers,
       runtimeChecks: {
