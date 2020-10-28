@@ -20,6 +20,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { WeatherDetailsService } from './components/WeatherDetails/weather-details.service';
 import { SharedDataService } from './services/sharedData.service';
 import { SharedService } from './services/shared.service';
+import { AppSandboxService } from './app-sandbox.service';
+
 
 import { AgmCoreModule } from '@agm/core';//Google Maps
 
@@ -172,7 +174,7 @@ export class MaterialModule {}
   ],
   exports:[],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [WeatherDetailsService,SharedDataService,SharedService],
+  providers: [WeatherDetailsService,SharedDataService,SharedService,AppSandboxService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

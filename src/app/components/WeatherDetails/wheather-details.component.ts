@@ -1,4 +1,4 @@
-import { Component, OnInit, Input,ViewChild, ElementRef, NgZone, ɵConsole } from '@angular/core';
+import { Component, OnInit, Input,ViewChild, ElementRef, NgZone } from '@angular/core';
 import { MapsAPILoader } from '@agm/core';//, MouseEvent tbc
 import {GoogleMapService} from 'src/app/services/googleMap.service';
 
@@ -17,12 +17,16 @@ import { Favorite } from '../favorites/favorite.model';
 import { FavoriteAdd, FavoriteRemove } from '../favorites/favorite.actions';
 import { DatePipe } from '@angular/common';
 
+//Google Maps
 //https://www.freakyjolly.com/angular-google-maps-using-agm-core/#.X1YVyxMzat8
 //https://console.developers.google.com/projectselector2/apis/dashboard?pli=1&supportedpurview=project
 
 //icons
 //https://developer.accuweather.com/weather-icons
 //https://www.iconarchive.com/search?q=accu+weather&res=small&page=1
+
+//View mobile,tablet and desktop
+//https://medium.com/@bo.vandersteene/angular-track-is-your-app-in-mobile-tablet-or-desktop-view-c8fb4d7d1c2f
 
 @Component({
   selector: 'app-wheather-details',
@@ -93,7 +97,7 @@ export class WheatherDetailsComponent implements OnInit {
   addIndex:number= 0;
   deleteIndex:number=0;
 
-  //Google Mamps
+  //Google Maps
   title: string = '';
   latitude: number;
   longitude: number;
@@ -140,8 +144,6 @@ export class WheatherDetailsComponent implements OnInit {
  
     }
 
-
-    //TEST TEST TEST HERE
     this.favorites.pipe( 
       map(arr =>
          this.favArr = arr.filter( r => r.ID == this.key )
