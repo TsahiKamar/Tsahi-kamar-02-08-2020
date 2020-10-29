@@ -4,7 +4,7 @@ import { type } from './util';
 export const ActionTypes = {
   SET_SCREEN: type<'SET_SCREEN'>('SET_SCREEN'),
 };
-const MOBILE_MAX_WIDTH = 425;  //Adjust as needed
+const MOBILE_MAX_WIDTH = 480;//ORIG 425;  //Adjust as needed
 const TABLET_MAX_WIDTH = 1024; //Adjust as needed
 
 // Action type for screen
@@ -16,6 +16,7 @@ export class SetScreen implements Action {
     desktop: boolean
   }>;
 
+  //6.22 inch ?
   public constructor(width: number) {
     console.log('screen.action ctor');  
     const mobile = width <= MOBILE_MAX_WIDTH;

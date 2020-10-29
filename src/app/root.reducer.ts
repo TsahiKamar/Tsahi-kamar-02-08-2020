@@ -1,5 +1,4 @@
 import { InjectionToken } from '@angular/core';
-//import { ActionReducerMap, MetaReducer } from '@ngrx/store';
 import { environment } from 'src/environments/environment';
 import { ApplicationState } from './application.state';
 import { screenReducer } from './screen.reducer';
