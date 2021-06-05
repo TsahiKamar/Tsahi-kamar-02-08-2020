@@ -1,0 +1,11 @@
+{
+    "env": {
+       "MONGO_PROJECT_NAME": "HapoalimAppDB",
+       "MONGO_DB_NAME":"HapoalimDB",
+       "MONGO_USER_NAME":"dbUser",  
+       "MONGO_ATLAS_PW": "dbUserPassword"
+       
+    }  
+   }
+   
+   
