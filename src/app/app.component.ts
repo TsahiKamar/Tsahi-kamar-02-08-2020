@@ -4,7 +4,7 @@ import { fromEvent } from 'rxjs/internal/observable/fromEvent';
 
 import { debounceTime, distinctUntilChanged, map, startWith, tap } from 'rxjs/operators';
 
-import { AppSandboxService } from './app-sandbox.service';
+//import { AppSandboxService } from './app-sandbox.service';
 
 
 @Component({
@@ -12,35 +12,32 @@ import { AppSandboxService } from './app-sandbox.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-//export class AppComponent {
-  //title = 'heroloWeather';
-//}
   export class AppComponent implements OnInit, OnDestroy {
-    title = 'poalim';
+    title = 'Poalim';
 
-    private _resize$: Observable<number>;
-    mobile$ = this.sb.mobile$;
-    tablet$ = this.sb.tablet$;
-    desktop$ = this.sb.desktop$;
+    // private _resize$: Observable<number>;
+    // mobile$ = this.sb.mobile$;
+    // tablet$ = this.sb.tablet$;
+    // desktop$ = this.sb.desktop$;
   
-    constructor(private sb: AppSandboxService) {
+    constructor(){//private sb: AppSandboxService) {
     }
   
     ngOnInit(): void {
-      this._resize$ = fromEvent(window, 'resize')//Orig Observable.fromEvent
-        .pipe(
-          debounceTime(200),
-          map(() => window.innerWidth),
-          distinctUntilChanged(),
-          startWith(window.innerWidth),
-          tap(width => this.sb.setWindowWidth(width)),
-          tap(console.log)
-        );
-      this._resize$.subscribe();
+      // this._resize$ = fromEvent(window, 'resize')
+      //   .pipe(
+      //     debounceTime(200),
+      //     map(() => window.innerWidth),
+      //     distinctUntilChanged(),
+      //     startWith(window.innerWidth),
+      //     tap(width => this.sb.setWindowWidth(width)),
+      //     tap(console.log)
+      //   );
+      // this._resize$.subscribe();
     }
   
     ngOnDestroy(): void {
-      //tbc this._resize$.distinctUntilChanged();
+    
     }
   }
 

@@ -4,35 +4,19 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
    </header>
 <body>
-  
   <mat-toolbar color="firebrick">
-    <!--<img src="../../../assets/poalim.jpeg" onerror="this.onerror=null;this.hidden='true';" height="35" width="35" />-->
-
+  
     <button mat-icon-button routerLink="/balanceReport" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><mat-icon>menu</mat-icon></button>
-    <!--<button mat-button routerLink="/weatherDetails" routerLinkActive="active"
-    [routerLinkActiveOptions]="{exact:true}">Home</button>
-    <button mat-button routerLink="/favorites" routerLinkActive="active">Favorites</button>-->
+    <button mat-button routerLink="/balanceReport" routerLinkActive="active">מאזן</button>
+    <button mat-button routerLink="/depositReport" routerLinkActive="active">הפקדות</button>
+    <button mat-button routerLink="/withdrawlReport" routerLinkActive="active">משיכות</button>
+    <button mat-button routerLink="/euroReport" routerLinkActive="active">אירו</button>
+    <a href="https://www.bankhapoalim.co.il/he">
 
-    
-    <button mat-button [matMenuTriggerFor]="belowMenu" routerLink="/balanceReport" routerLinkActive="active">מאזן</button>
-    <button mat-button [matMenuTriggerFor]="belowMenu" routerLink="/depositReport" routerLinkActive="active">הפקדות</button>
-    <button mat-button [matMenuTriggerFor]="belowMenu" routerLink="/withdrawlReport" routerLinkActive="active">משיכות</button>
-    <button mat-button [matMenuTriggerFor]="belowMenu" routerLink="/euroReport" routerLinkActive="active">אירו</button>
     <img src="../../../assets/poalim.jpeg" class="img" onerror="this.onerror=null;this.hidden='true';" />
-
+    </a>
     
   </mat-toolbar>
-
-
-
-
-  
-  <!--<button mat-button [matMenuTriggerFor]="afterMenu">After</button>
-  <mat-menu #afterMenu="matMenu" xPosition="after">
-    <button mat-menu-item>Item 1</button>
-    <button mat-menu-item>Item 2</button>
-  </mat-menu>-->
-  
 
 </body>
 </html>

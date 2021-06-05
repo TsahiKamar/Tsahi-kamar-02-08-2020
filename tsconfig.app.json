@@ -19,17 +19,3 @@
   ]
 }
 
-//Google Maps
-// {
-//   "extends": "../tsconfig.json",
-//   "compilerOptions": {
-//     "outDir": "../out-tsc/app",
-//     "types": [
-//       "googlemaps"
-//     ]
-//   },
-//   "exclude": [
-//     "test.ts",
-//     "**/*.spec.ts"
-//   ]
-// }

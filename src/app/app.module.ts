@@ -1,14 +1,7 @@
-import { StoreModule } from '@ngrx/store'; 
-import { reducers, metaReducers } from './reducers';
-//import { FavoriteReducer } from './components/favorites/favorite.reducer';
-import {FavoriteReducer} from './components/favorites/favorite.reducer';
 import { BrowserModule } from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-
 import { NgModule,CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -17,17 +10,8 @@ import { DepositReportComponent } from './components/deposit-report/deposit-repo
 import { WithdrawlReportComponent } from './components/withdrawl-report/withdrawl-report.component';
 import { EuroReportComponent } from './components/euro-report/euro-report.component';
 
-//import { WheatherDetailsComponent } from './components/WeatherDetails/wheather-details.component';
-//import { FavoritesComponent } from './components/favorites/favorites.component';
-
 import { HttpClientModule } from '@angular/common/http';
-
-//import { WeatherDetailsService } from './components/WeatherDetails/weather-details.service';
-//import { SharedDataService } from './services/sharedData.service';
-//import { SharedService } from './services/shared.service';
-import { AppSandboxService } from './app-sandbox.service';
-
-//import { AgmCoreModule } from '@agm/core';//Google Maps
+import { GeneralService } from './services/general.service';
 
 
 import {A11yModule} from '@angular/cdk/a11y';
@@ -82,7 +66,6 @@ import {
   MatTreeModule
 
 } from '@angular/material';
-import { GeneralService } from './services/general.service';
 
 
 
@@ -143,13 +126,7 @@ import { GeneralService } from './services/general.service';
     MatTreeModule
   ],
   declarations: [],
-  imports: [StoreModule.forRoot(reducers, { 
-      metaReducers,
-      runtimeChecks: {
-        strictStateImmutability: true,
-        strictActionImmutability: true
-      }
-    })],
+  imports:[],
 })
 export class MaterialModule {}
 
@@ -170,15 +147,12 @@ export class MaterialModule {}
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    StoreModule.forRoot({ favorites: FavoriteReducer }),
-    //AgmCoreModule.forRoot({
-    //  apiKey: 'AIzaSyAdnouwwu_BoGw7OD5zyvll1NKF5SOaS4Q',
-    //  libraries: ['places']
-    //})
+    
+   
   ],
   exports:[],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [AppSandboxService,GeneralService],//[WeatherDetailsService,SharedDataService,SharedService,AppSandboxService],
+  providers: [GeneralService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
