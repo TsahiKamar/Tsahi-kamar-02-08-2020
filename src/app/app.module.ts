@@ -1,7 +1,7 @@
 import { StoreModule } from '@ngrx/store'; 
 import { reducers, metaReducers } from './reducers';
-import { FavoriteReducer } from './components/favorites/favorite.reducer';
-
+//import { FavoriteReducer } from './components/favorites/favorite.reducer';
+import {FavoriteReducer} from './components/favorites/favorite.reducer';
 import { BrowserModule } from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
@@ -12,18 +12,22 @@ import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
-import { WheatherDetailsComponent } from './components/WeatherDetails/wheather-details.component';
-import { FavoritesComponent } from './components/favorites/favorites.component';
+import { BalanceReportComponent } from './components/balanceReport/balanceReport.component';
+import { DepositReportComponent } from './components/deposit-report/deposit-report.component';
+import { WithdrawlReportComponent } from './components/withdrawl-report/withdrawl-report.component';
+import { EuroReportComponent } from './components/euro-report/euro-report.component';
+
+//import { WheatherDetailsComponent } from './components/WeatherDetails/wheather-details.component';
+//import { FavoritesComponent } from './components/favorites/favorites.component';
 
 import { HttpClientModule } from '@angular/common/http';
 
-import { WeatherDetailsService } from './components/WeatherDetails/weather-details.service';
-import { SharedDataService } from './services/sharedData.service';
-import { SharedService } from './services/shared.service';
+//import { WeatherDetailsService } from './components/WeatherDetails/weather-details.service';
+//import { SharedDataService } from './services/sharedData.service';
+//import { SharedService } from './services/shared.service';
 import { AppSandboxService } from './app-sandbox.service';
-//new blbllblbblbl
 
-import { AgmCoreModule } from '@agm/core';//Google Maps
+//import { AgmCoreModule } from '@agm/core';//Google Maps
 
 
 import {A11yModule} from '@angular/cdk/a11y';
@@ -78,6 +82,7 @@ import {
   MatTreeModule
 
 } from '@angular/material';
+import { GeneralService } from './services/general.service';
 
 
 
@@ -148,15 +153,14 @@ import {
 })
 export class MaterialModule {}
 
-
-
-
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    WheatherDetailsComponent,
-    FavoritesComponent
+    BalanceReportComponent,
+    DepositReportComponent, 
+    WithdrawlReportComponent, 
+    EuroReportComponent,
   ],
   imports: [
     HttpClientModule,
@@ -167,14 +171,14 @@ export class MaterialModule {}
     FormsModule,
     ReactiveFormsModule,
     StoreModule.forRoot({ favorites: FavoriteReducer }),
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyAdnouwwu_BoGw7OD5zyvll1NKF5SOaS4Q',
-      libraries: ['places']
-    })
+    //AgmCoreModule.forRoot({
+    //  apiKey: 'AIzaSyAdnouwwu_BoGw7OD5zyvll1NKF5SOaS4Q',
+    //  libraries: ['places']
+    //})
   ],
   exports:[],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [WeatherDetailsService,SharedDataService,SharedService,AppSandboxService],
+  providers: [AppSandboxService,GeneralService],//[WeatherDetailsService,SharedDataService,SharedService,AppSandboxService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,0 +1,18 @@
+
+table {
+    width: 100%;
+}
+
+.mat-row:nth-child(even){
+  background-color:gainsboro;
+  }
+
+.mat-row:nth-child(odd){
+  background-color:slategray;
+  }
+
+  th.mat-header-cell{
+    background-color:firebrick;
+    font-weight: bold;
+  }
+  

@@ -5,7 +5,7 @@ export const ActionTypes = {
   SET_SCREEN: type<'SET_SCREEN'>('SET_SCREEN'),
 };
 const MOBILE_MAX_WIDTH = 480;//ORIG 425;  //Adjust as needed
-const TABLET_MAX_WIDTH = 1024; //Adjust as needed
+const TABLET_MAX_WIDTH = 1024;//2048 //Adjust as needed
 
 // Action type for screen
 export class SetScreen implements Action {

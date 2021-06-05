@@ -6,6 +6,7 @@ import { debounceTime, distinctUntilChanged, map, startWith, tap } from 'rxjs/op
 
 import { AppSandboxService } from './app-sandbox.service';
 
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -15,7 +16,7 @@ import { AppSandboxService } from './app-sandbox.service';
   //title = 'heroloWeather';
 //}
   export class AppComponent implements OnInit, OnDestroy {
-    title = 'heroloWeather';
+    title = 'poalim';
 
     private _resize$: Observable<number>;
     mobile$ = this.sb.mobile$;
